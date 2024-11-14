@@ -1,4 +1,8 @@
 import { assets } from "../assets/assets"
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 
 const FooterComponent = () => {
@@ -7,7 +11,7 @@ const FooterComponent = () => {
     <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
         <div>
             <img className="mb-5 w-40" src={assets.logo} alt="" />
-            <p className="w-full md:w-2/3 text-gray-600 leading-6">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum explicabo labore ut et, eius ab provident quod ea maiores non tenetur, enim rem quos aliquid praesentium optio blanditiis maxime aliquam magnam officiis deleniti. Ipsa adipisci quidem necessitatibus veritatis debitis in amet vero facilis expedita provident quaerat ducimus earum, quos maiores.</p>
+            <p className="w-full md:w-2/3 text-gray-600 leading-6">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis debitis in amet vero facilis expedita provident quaerat ducimus earum, quos maiores.</p>
         </div>
 
         <div>
@@ -21,10 +25,14 @@ const FooterComponent = () => {
         </div>
 
         <div>
-            <p className="text-xl font-medium mb-5">PONTE EN CONTACTO</p>
+            <p className="text-xl font-medium mb-5">CONTACTAME</p>
             <ul className="flex flex-col gap-2 text-gray-600">
-                <li>+54 1154793056</li>
-                <li>mcarreradev12@gmail.com</li>
+                <li className="flex gap-1"><PhoneIphoneIcon fontSize="small"/>+54 1154793056</li>
+                <li className="flex gap-1.5"><MailOutlineIcon fontSize="small"/>mcarreradev12@gmail.com</li>
+                <div  className="flex gap-2">
+                    <li className="cursor-pointer hover:text-githubOrange transition-all duration-500" ><GitHubIcon fontSize="large"/></li>
+                    <li className="cursor-pointer hover:text-linkedinBlue transition-all duration-500" ><LinkedInIcon fontSize="large"/></li>
+                </div>
             </ul>
         </div>
 

@@ -1,4 +1,5 @@
 import { assets } from "../assets/assets";
+import EastRoundedIcon from '@mui/icons-material/EastRounded';
 
 const HeaderComponent = () => {
   return (
@@ -17,7 +18,7 @@ const HeaderComponent = () => {
           </p>
           </div>
           <a href="#speciality" className="flex items-center gap-2 bg-white px-8 py-2 rounded-full text-gray-600 text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300">
-            Agenda tu turno <img className="w-3" src={assets.arrow_icon} alt="" />
+            Agenda tu turno <EastRoundedIcon fontSize="" className="w-3 text-gray-600 "  alt="" />
           </a>
         </div>
 

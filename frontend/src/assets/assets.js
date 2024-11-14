@@ -5,12 +5,8 @@ import profile_pic from './profile_pic.png'
 import contact_image from './contact_image.png'
 import about_image from './about_image.png'
 import logo from './logo.svg'
-import dropdown_icon from './dropdown_icon.svg'
-import menu_icon from './menu_icon.svg'
-import cross_icon from './cross_icon.png'
 import chats_icon from './chats_icon.svg'
 import verified_icon from './verified_icon.svg'
-import arrow_icon from './arrow_icon.svg'
 import info_icon from './info_icon.svg'
 import upload_icon from './upload_icon.png'
 import stripe_logo from './stripe_logo.png'
@@ -47,12 +43,8 @@ export const assets = {
     verified_icon,
     info_icon,
     profile_pic,
-    arrow_icon,
     contact_image,
     about_image,
-    menu_icon,
-    cross_icon,
-    dropdown_icon,
     upload_icon,
     stripe_logo,
     razorpay_logo
@@ -98,12 +90,12 @@ export const doctors = [
     },
     {
         _id: 'doc3',
-        name: 'Dra. Sara Pereyra',
+        name: 'Dr. Mario Pereyra',
         image: doc3,
         speciality: 'Dermatología',
         degree: 'Médica',
         experience: '1 año',
-        about: 'La Dra. Pereyra está comprometida con el diagnóstico y tratamiento de enfermedades de la piel, con un enfoque en la salud dermatológica preventiva.',
+        about: 'El Dr. Pereyra está comprometido con el diagnóstico y tratamiento de enfermedades de la piel, con un enfoque en la salud dermatológica preventiva.',
         fees: 4500,
         address: {
             line1: 'Calle Florida 1122',
@@ -168,12 +160,12 @@ export const doctors = [
     },
     {
         _id: 'doc8',
-        name: 'Dra. Mariana Silva',
+        name: 'Dra. Mariano Silva',
         image: doc8,
         speciality: 'Ginecología',
-        degree: 'Médica',
+        degree: 'Médico',
         experience: '3 años',
-        about: 'La Dra. Silva se dedica a la salud femenina con un enfoque en el bienestar integral y la prevención de enfermedades.',
+        about: 'El Dr. Silva se dedica a la salud femenina con un enfoque en el bienestar integral y la prevención de enfermedades.',
         fees: 5500,
         address: {
             line1: 'Av. de Mayo 1550',
@@ -252,12 +244,12 @@ export const doctors = [
     },
     {
         _id: 'doc14',
-        name: 'Dra. Carla Méndez',
+        name: 'Dra. Carlos Méndez',
         image: doc14,
         speciality: 'Ginecología',
         degree: 'Médica',
         experience: '3 años',
-        about: 'La Dra. Méndez tiene una amplia experiencia en el cuidado de la salud femenina y en promover prácticas saludables.',
+        about: 'El Dr. Méndez tiene una amplia experiencia en el cuidado de la salud femenina y en promover prácticas saludables.',
         fees: 5500,
         address: {
             line1: 'Av. Cabildo 2675',
