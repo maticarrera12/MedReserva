@@ -11,7 +11,6 @@ const DoctorsPage = () => {
   const {doctors} = useContext(AppContext);
   const [showFilter, setShowFilter] = useState(false);
 
-
   const applyFilter = () =>{
     if(speciality){
       SetFilterDoc(doctors.filter(doc => doc.speciality === speciality))

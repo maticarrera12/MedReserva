@@ -30,8 +30,8 @@ const FooterComponent = () => {
                 <li className="flex gap-1"><PhoneIphoneIcon fontSize="small"/>+54 1154793056</li>
                 <li className="flex gap-1.5"><MailOutlineIcon fontSize="small"/>mcarreradev12@gmail.com</li>
                 <div  className="flex gap-2">
-                    <li className="cursor-pointer hover:text-githubOrange transition-all duration-500" ><GitHubIcon fontSize="large"/></li>
-                    <li className="cursor-pointer hover:text-linkedinBlue transition-all duration-500" ><LinkedInIcon fontSize="large"/></li>
+                    <li className="cursor-pointer hover:text-githubOrange transition-all duration-500"><GitHubIcon fontSize="large"/></li>
+                    <li className="cursor-pointer hover:text-linkedinBlue transition-all duration-500"><LinkedInIcon fontSize="large"/></li>
                 </div>
             </ul>
         </div>

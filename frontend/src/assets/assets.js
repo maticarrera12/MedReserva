@@ -93,7 +93,7 @@ export const doctors = [
         name: 'Dr. Mario Pereyra',
         image: doc3,
         speciality: 'Dermatología',
-        degree: 'Médica',
+        degree: 'Médico',
         experience: '1 año',
         about: 'El Dr. Pereyra está comprometido con el diagnóstico y tratamiento de enfermedades de la piel, con un enfoque en la salud dermatológica preventiva.',
         fees: 4500,
