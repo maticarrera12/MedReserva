@@ -2,8 +2,19 @@ import { useContext, useEffect, useState } from "react"
 import {AppContext} from '../context/AppContext'
 import axios from "axios"
 import { toast } from "react-toastify"
+import {initMercadoPago, Wallet} from "@mercadopago/sdk-react"
+
+
+
+
+
+<Wallet initialization={{ preferenceId: '<PREFERENCE_ID>' }} customization={{ texts:{ valueProp: 'smart_option'}}}/>
 
 const MyAppointmentsPage = () => {
+
+  initMercadoPago('',{
+    locale: 'es-AR'
+  }); 
 
   const {backendUrl, token, getDoctorsData} = useContext(AppContext)
   const [appointments, setAppointments] = useState([])

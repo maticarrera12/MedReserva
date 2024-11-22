@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 
+
 // API para registrar usuario
 
 const registerUser = async (req, res) => {
@@ -220,6 +221,7 @@ const listAppointments = async (req, res) => {
       res.json({ success: false, message: error.message });
     }
   }
+
 
 export {
   registerUser,
