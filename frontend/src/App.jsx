@@ -5,12 +5,12 @@ import LoginPage from "./pages/LoginPage"
 import AboutPage from "./pages/AboutPage"
 import ContactPage from "./pages/ContactPage"
 import MyProfilePage from "./pages/MyProfilePage"
-import MyAppoinmentsPage from "./pages/MyAppoinmentsPage"
-import AppoinmentPage from "./pages/AppoinmentPage"
 import NavbarComponent from "./components/NavbarComponent"
 import FooterComponent from "./components/FooterComponent"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MyAppointmentsPage from "./pages/MyAppointmentsPage"
+import AppointmentPage from "./pages/AppointmentPage"
 
 const App = () => {
   return (
@@ -25,8 +25,8 @@ const App = () => {
       <Route path="/nosotros" element={<AboutPage/>}/>
       <Route path="/contacto" element={<ContactPage/>}/>
       <Route path="/mi-perfil" element={<MyProfilePage/>}/>
-      <Route path="/mis-turnos" element={<MyAppoinmentsPage/>}/>
-      <Route path="/turnos/:docId" element={<AppoinmentPage/>}/>
+      <Route path="/mis-turnos" element={<MyAppointmentsPage/>}/>
+      <Route path="/turnos/:docId" element={<AppointmentPage/>}/>
      </Routes>
      <FooterComponent/>
     </div>

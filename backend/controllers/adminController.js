@@ -2,9 +2,10 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 
-// API para añadir doctor
+// Api para anadir doctor
+
 const addDoctor = async (req, res) => {
   try {
     const {
@@ -74,45 +75,44 @@ const addDoctor = async (req, res) => {
         address:JSON.parse(address),
         date:Date.now()
     }
-    const newDoctor = new doctorModel(doctorData);
-    await newDoctor.save();
+    const newDoctor = new doctorModel(doctorData)
+    await newDoctor.save()
 
-    res.json({success:true, message:"Doctor Agregado"});
+    res.json({success:true, message:"Doctor Agregado"})
     
   } catch (error) {
     console.log(error);
-    res.json({success:false,message:error.message});
+    res.json({success:false,message:error.message})
   }
 };
 
-// API admin login
-const loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
 
-    // Verificar si las credenciales del administrador son correctas
-    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-      // Generar token con el email del administrador
-      const token = jwt.sign({ email: process.env.ADMIN_EMAIL }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.json({ success: true, token });
-    } else {
-      res.json({ success: false, message: 'Credenciales Invalidas' });
+// API admin login
+const loginAdmin = async (req,res) => {
+  try {
+    const {email,password} = req.body
+
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+      const token = jwt.sign(email+password,process.env.JWT_SECRET )
+      res.json({success:true,token})
+    }else{
+      res.json({success:false, message:'Credenciales Invalidas'})
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: error.message });
+    res.json({success:false,message:error.message})
   }
-};
+}
+  // API para ver todos los doctores
 
-// API para ver todos los doctores
-const allDoctors = async (req, res) => {
-  try {
-    const doctors = await doctorModel.find({}).select('-password');
-    res.json({ success: true, doctors });
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
-  }
-};
-
+  const allDoctors = async (req,res) => {
+    try {
+      const doctors = await doctorModel.find({}).select('-password')
+      res.json({success:true,doctors})
+    } catch (error) {
+      console.log(error);
+      res.json({success:false,message:error.message})
+    }
+  
+}
 export { addDoctor, loginAdmin, allDoctors };

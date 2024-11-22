@@ -1,32 +1,21 @@
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 
-// Middleware de autenticación de usuario
-const authUser = async (req, res, next) => {
-  try {
-    // Obtener el token desde el encabezado personalizado
-    const { token } = req.headers;
-    
-    if (!token) {
-      return res.json({ success: false, message: 'No autorizado. Ingrese el token nuevamente.' });
+// token de autenticacion de usuario
+const authUser = async (req,res,next) => {
+// console.log("Token recibido:", req.headers.token);
+    try {
+        
+        const{token} = req.headers
+        if (!token) {
+            return res.json({success:false,message:'No Autorizado. Ingrese Nuevamente'})
+        }
+        const token_decode = jwt.verify(token, process.env.JWT_SECRET)
+        req.body.userId = token_decode.id
+        next()
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:error.message})
     }
+}
 
-    // Verificar y decodificar el token
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Agregar el userId al cuerpo de la solicitud para su uso en rutas protegidas
-    req.body.userId = decodedToken.id;
-    next();
-  } catch (error) {
-    console.log(error);
-
-    // Manejar el caso de token expirado
-    if (error.name === 'TokenExpiredError') {
-      return res.json({ success: false, message: 'Token expirado. Por favor, inicie sesión nuevamente.' });
-    }
-
-    // Otros errores de token
-    return res.json({ success: false, message: 'Token no válido. Intente nuevamente.' });
-  }
-};
-
-export default authUser;
+export default authUser

@@ -1,18 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import RelatedDoctorsComponent from "../components/RelatedDoctorsComponent";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const AppoinmentPage = () => {
+const AppointmentPage = () => {
   const { docId } = useParams();
-  const { doctors, currencySymbol } = useContext(AppContext);
+  const { doctors, currencySymbol, backendUrl, token, getDoctorsData } =
+    useContext(AppContext);
   const dayOfWeek = ["LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM"];
 
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
+  const navigate = useNavigate();
 
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
@@ -55,18 +59,65 @@ const AppoinmentPage = () => {
           minute: "2-digit",
         });
 
-        // agregar slot a array
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
 
-        timeSlots.push({
-          dateTime: new Date(currentDate),
-          time: formattedTime,
-        });
+        const slotDate = day + " " + month + " " + year;
+        const slotTime = formattedTime;
 
-        // incrementar hora actual por 30 minutos
-        currentDate.setMinutes(currentDate.getMinutes() + 30);
+        const isSlotAvailable =
+          docInfo.slots_booked[slotDate] &&
+          docInfo.slots_booked[slotDate].includes(slotTime)
+            ? false
+            : true;
+
+        if (isSlotAvailable) {
+          // agregar slot a array
+          timeSlots.push({
+            dateTime: new Date(currentDate),
+            time: formattedTime,
+          });
+        }
+
+        // incrementar hora actual por 20 minutos
+        currentDate.setMinutes(currentDate.getMinutes() + 20);
       }
 
       setDocSlots((prev) => [...prev, timeSlots]);
+    }
+  };
+
+  // reserva turno
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warn("Inicie Sesion para Tomar un Turno");
+      return navigate("/login");
+    }
+
+    try {
+      const date = docSlots[slotIndex][0].dateTime;
+      let day = date.getDate();
+      let month = date.getMonth()+1;
+      let year = date.getFullYear();
+
+      const slotDate = day + " " + month + " " + year;
+
+      const { data } = await axios.post(
+        backendUrl + "/api/user/tomar-turno",
+        { docId, slotDate, slotTime },
+        { headers: { token } }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        getDoctorsData();
+        navigate("/mis-turnos");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -168,15 +219,21 @@ const AppoinmentPage = () => {
                 </p>
               ))}
           </div>
-          <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">
+          <button
+            onClick={bookAppointment}
+            className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6"
+          >
             Agendar Turno
           </button>
         </div>
 
-        <RelatedDoctorsComponent docId={docId} speciality={docInfo.speciality} />
+        <RelatedDoctorsComponent
+          docId={docId}
+          speciality={docInfo.speciality}
+        />
       </div>
     )
   );
 };
 
-export default AppoinmentPage;
+export default AppointmentPage;
