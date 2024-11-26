@@ -6,7 +6,8 @@ import {
   updateProfile,
   bookAppointment,
   listAppointments,
-  cancelAppointment
+  cancelAppointment,
+  paymentMercadoPago
 } from "../controllers/userController.js";
 import authUser from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
@@ -20,5 +21,6 @@ userRouter.post("/actualizar-perfil",upload.single("image"),authUser,updateProfi
 userRouter.post("/tomar-turno", authUser, bookAppointment);
 userRouter.get("/turnos", authUser, listAppointments);
 userRouter.post("/cancelar-turno", authUser, cancelAppointment);
+userRouter.post("/pagar-mercadopago", authUser, paymentMercadoPago);
 
 export default userRouter;

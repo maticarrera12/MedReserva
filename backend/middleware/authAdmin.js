@@ -6,6 +6,7 @@ const authAdmin = async (req,res,next) => {
     try {
         
         const{atoken} = req.headers
+        
         if (!atoken) {
             return res.json({success:false,message:'No Autorizado. Ingrese Nuevamente'})
         }
