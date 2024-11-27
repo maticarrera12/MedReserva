@@ -2,14 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Link } from "react-router-dom";
 
 const MyAppointmentsPage = () => {
-  // Inicializa MercadoPago con las credenciales de sandbox
-  initMercadoPago("APP_USR-81080000-b7d7-425f-bc5b-bfdc544edbbe", {
-    locale: "es-AR",
-  });
+
 
   const { backendUrl, token, getDoctorsData } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
@@ -108,21 +104,6 @@ const MyAppointmentsPage = () => {
     }
   };
 
-  // Manejar el clic en "Pagar Online"
-  const handleBuy = async (appointmentId) => {
-    await appointmentMercadoPago(appointmentId); // Obtener la preferencia y setear el preferenceId
-  };
-
-  // Redirigir al sandbox cuando se haga clic en el Wallet
-  const handleRedirectToSandbox = (initPoint) => {
-    console.log("Redirigiendo al sandbox con la URL:", initPoint);
-    if (initPoint) {
-      window.location.href = initPoint; // Redirige al sandbox
-    } else {
-      toast.error("No se recibió un initPoint válido.");
-    }
-  };
-
   // Cargar las citas al inicio
   useEffect(() => {
     if (token) {
@@ -174,25 +155,9 @@ const MyAppointmentsPage = () => {
                   Turno Pagado
                 </p>
               )}
-              {/* Mostrar el Wallet solo si se ha recibido el preferenceId */}
-              {preferences[item._id]?.preferenceId &&
-                preferences[item._id]?.initPoint && (
-                  <Wallet
-                    initialization={{
-                      preferenceId: preferences[item._id]?.preferenceId,
-                    }}
-                    customization={{
-                      texts: {
-                        valueProp: "smart_option",
-                      },
-                    }}
-                    onClick={() => handleRedirectToSandbox(item._id)} // Redirigir al sandbox cuando se hace clic en el Wallet
-                  />
-                )}
-              {/* Mostrar el botón de pago solo si no se canceló la cita */}
               {!item.cancelled && !item.payment && !item.isCompleted && (
                 <button
-                  onClick={() => handleBuy(item._id)} // Pasar el ID de la cita para generar el preferenceId
+                 // Pasar el ID de la cita para generar el preferenceId
                   className="text-sm text-stone-500 sm:min-w-48 py-2 border rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
                 >
                   Pagar Online

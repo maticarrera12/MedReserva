@@ -8,8 +8,6 @@ import {
   bookAppointment,
   listAppointments,
   cancelAppointment,
-  paymentMercadoPago,
-  verifyMercadoPago
 } from "../controllers/userController.js";
 import authUser from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
@@ -25,8 +23,7 @@ userRouter.post("/tomar-turno", authUser, bookAppointment);
 userRouter.get("/turnos", authUser, listAppointments);
 userRouter.post("/cancelar-turno", authUser, cancelAppointment);
 
-// Rutas de pago con Mercado Pago
-userRouter.post("/pagar-mercadopago", authUser, paymentMercadoPago);
-userRouter.post("/verificar-pago", authUser, verifyMercadoPago);
+
+
 
 export default userRouter;
