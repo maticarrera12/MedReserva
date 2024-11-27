@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { Link } from "react-router-dom";
 
 const MyAppointmentsPage = () => {
   // Inicializa MercadoPago con las credenciales de sandbox
@@ -13,6 +14,7 @@ const MyAppointmentsPage = () => {
   const { backendUrl, token, getDoctorsData } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
   const [preferences, setPreferences] = useState({}); // Estado para almacenar preferenceId por cita
+
 
   const months = [
     "",
@@ -140,15 +142,17 @@ const MyAppointmentsPage = () => {
             key={index}
           >
             <div>
+              <Link to={`/turnos/${item.docData._id}`}>
               <img
                 className="w-32 bg-indigo-50"
                 src={item.docData.image}
                 alt=""
               />
+              </Link>
             </div>
             <div className="flex-1 text-sm text-zinc-600">
               <p className="text-neutral-800 font-semibold">
-                {item.docData.name}
+               <Link to={`/turnos/${item.docData._id}`}>{item.docData.name}</Link> 
               </p>
               <p>{item.docData.speciality}</p>
               <p className="text-zinc-700 font-medium mt-1">Direccion:</p>
