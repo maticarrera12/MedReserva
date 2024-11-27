@@ -6,7 +6,7 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 const MyAppointmentsPage = () => {
   // Inicializa MercadoPago con las credenciales de sandbox
-  initMercadoPago('APP_USR-81080000-b7d7-425f-bc5b-bfdc544edbbe', {
+  initMercadoPago("APP_USR-81080000-b7d7-425f-bc5b-bfdc544edbbe", {
     locale: "es-AR",
   });
 
@@ -33,7 +33,9 @@ const MyAppointmentsPage = () => {
   // Formatear la fecha de la cita
   const slotDateFormat = (slotDate) => {
     const dateArray = slotDate.split(" ");
-    return dateArray[0] + " " + months[Number(dateArray[1])] + "," + dateArray[2];
+    return (
+      dateArray[0] + " " + months[Number(dateArray[1])] + "," + dateArray[2]
+    );
   };
 
   // Obtener citas del usuario
@@ -69,8 +71,6 @@ const MyAppointmentsPage = () => {
       toast.error(error.message);
     }
   };
-
-
 
   // Función para obtener la preferencia de pago
   const appointmentMercadoPago = async (appointmentId) => {
@@ -130,7 +130,9 @@ const MyAppointmentsPage = () => {
 
   return (
     <div>
-      <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">Mis Turnos</p>
+      <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">
+        Mis Turnos
+      </p>
       <div>
         {appointments.map((item, index) => (
           <div
@@ -138,16 +140,24 @@ const MyAppointmentsPage = () => {
             key={index}
           >
             <div>
-              <img className="w-32 bg-indigo-50" src={item.docData.image} alt="" />
+              <img
+                className="w-32 bg-indigo-50"
+                src={item.docData.image}
+                alt=""
+              />
             </div>
             <div className="flex-1 text-sm text-zinc-600">
-              <p className="text-neutral-800 font-semibold">{item.docData.name}</p>
+              <p className="text-neutral-800 font-semibold">
+                {item.docData.name}
+              </p>
               <p>{item.docData.speciality}</p>
               <p className="text-zinc-700 font-medium mt-1">Direccion:</p>
               <p className="text-sm">{item.docData.address.line1}</p>
               <p className="text-sm">{item.docData.address.line2}</p>
               <p className="text-sm mt-1">
-                <span className="text-sm text-neutral-700 font-medium">Dia y Hora:</span>{" "}
+                <span className="text-sm text-neutral-700 font-medium">
+                  Dia y Hora:
+                </span>{" "}
                 {slotDateFormat(item.slotDate)} | {item.slotTime}
               </p>
             </div>
@@ -155,22 +165,28 @@ const MyAppointmentsPage = () => {
             <div></div>
 
             <div className="flex flex-col gap-2 justify-end">
-              {/* Mostrar el Wallet solo si se ha recibido el preferenceId */}
-              {preferences[item._id]?.preferenceId && preferences[item._id]?.initPoint && (
-                <Wallet
-                  initialization={{
-                    preferenceId: preferences[item._id]?.preferenceId,
-                  }}
-                  customization={{
-                    texts: {
-                      valueProp: "smart_option",
-                    },
-                  }}
-                  onClick={() => handleRedirectToSandbox(item._id)} // Redirigir al sandbox cuando se hace clic en el Wallet
-                />
+              {!item.cancelled && item.payment && !item.isCompleted &&(
+                <p className="text-sm text-center text-white sm:min-w-48 py-2 border rounded-lg bg-green-500 hover:text-white">
+                  Turno Pagado
+                </p>
               )}
+              {/* Mostrar el Wallet solo si se ha recibido el preferenceId */}
+              {preferences[item._id]?.preferenceId &&
+                preferences[item._id]?.initPoint && (
+                  <Wallet
+                    initialization={{
+                      preferenceId: preferences[item._id]?.preferenceId,
+                    }}
+                    customization={{
+                      texts: {
+                        valueProp: "smart_option",
+                      },
+                    }}
+                    onClick={() => handleRedirectToSandbox(item._id)} // Redirigir al sandbox cuando se hace clic en el Wallet
+                  />
+                )}
               {/* Mostrar el botón de pago solo si no se canceló la cita */}
-              {!item.cancelled && (
+              {!item.cancelled && !item.payment && !item.isCompleted && (
                 <button
                   onClick={() => handleBuy(item._id)} // Pasar el ID de la cita para generar el preferenceId
                   className="text-sm text-stone-500 sm:min-w-48 py-2 border rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
@@ -178,7 +194,7 @@ const MyAppointmentsPage = () => {
                   Pagar Online
                 </button>
               )}
-              {!item.cancelled && (
+              {!item.cancelled && !item.isCompleted &&(
                 <button
                   onClick={() => cancelAppointment(item._id)}
                   className="text-sm text-stone-500 sm:min-w-48 py-2 border rounded-lg hover:bg-red-500 hover:text-white transition-all duration-300"
@@ -186,11 +202,14 @@ const MyAppointmentsPage = () => {
                   Cancelar Turno
                 </button>
               )}
-              {item.cancelled && (
+              {item.cancelled && !item.isCompleted &&(
                 <p className="text-sm text-center text-white sm:min-w-48 py-2 border rounded-lg bg-red-500 hover:text-white">
                   Turno Cancelado
                 </p>
               )}
+              {item.isCompleted &&   <p className="text-sm text-center text-white sm:min-w-48 py-2 border rounded-lg bg-blue-700 hover:text-white">
+                  Turno Completado
+                </p>}
             </div>
           </div>
         ))}

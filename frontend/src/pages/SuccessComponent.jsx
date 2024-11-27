@@ -1,27 +1,39 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom"; // Asegúrate de usar react-router-dom v6+
+import { useSearchParams } from "react-router-dom";  // Asegúrate de usar react-router-dom v6+
 
 const SuccessPage = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    // Convertir todos los parámetros de búsqueda en un objeto
-    const params = Object.fromEntries([...searchParams]);
+    const payment_id = searchParams.get("payment_id");
+    const status = searchParams.get("status");
+    const external_reference = searchParams.get("external_reference");
+    const preference_id = searchParams.get("preference_id");
 
-    // Mostrar en consola todos los datos recibidos
-    console.log("Datos completos del pago:", params);
+    const paymentData = {
+      payment_id,
+      status,
+      external_reference,
+      preference_id,
+    };
 
-    // Opcional: Enviar los datos al backend para guardar o validar el pago
-    // fetch("https://tu-backend.com/api/verify-mercadopago", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(params),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log("Respuesta del backend:", data))
-    //   .catch((error) => console.error("Error al enviar los datos al backend:", error));
+    console.log("Información del pago:", paymentData);
+
+    // Aquí enviamos la información del pago al backend para su verificación
+    fetch("http://localhost:4000/api/user/verificar-pago", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,  // Asegúrate de que el token esté en el localStorage
+      },
+      body: JSON.stringify(paymentData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Respuesta del backend:", data);
+      })
+      .catch((error) => console.error("Error al enviar los datos al backend:", error));
+
   }, [searchParams]);
 
   return (

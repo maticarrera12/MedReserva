@@ -1,7 +1,10 @@
 import express from "express";
 import {
   addDoctor,
+  adminDashboard,
   allDoctors,
+  appointmentAdmin,
+  appointmentCancel,
   loginAdmin,
 } from "../controllers/adminController.js";
 import upload from "../middleware/multer.js";
@@ -19,6 +22,11 @@ adminRouter.post(
 adminRouter.post("/login", loginAdmin);
 adminRouter.post("/lista-doctores", authAdmin, allDoctors);
 adminRouter.post("/cambiar-disponibilidad", authAdmin, changeAvailability);
+adminRouter.get("/turnos", authAdmin, appointmentAdmin);
+adminRouter.post("/cancelar-turno", authAdmin, appointmentCancel);
+adminRouter.get('/dashboard',authAdmin, adminDashboard)
+
+
 
 export default adminRouter;
 

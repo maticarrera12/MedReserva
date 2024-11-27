@@ -138,8 +138,6 @@ const AddDoctorPage = () => {
                 onChange={(e) => setExperience(e.target.value)}
                 value={experience}
                 className="border rounded px-3 py-1"
-                name=""
-                id=""
               >
                 <option value="1 Año">1 Año</option>
                 <option value="2 Años">2 Años</option>

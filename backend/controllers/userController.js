@@ -5,7 +5,7 @@ import userModel from "../models/userModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
-// SDK de Mercado Pago
+import axios from "axios"
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
 
@@ -273,58 +273,47 @@ console.log("Datos completos de la orden de compra:", response);
   }
 };
 
-
-// Verificar el estado de un pago con Mercado Pago
+/////////////////// Verificar el pago//////////////////////
 const verifyMercadoPago = async (req, res) => {
   try {
-    const { preference_id, payment_id } = req.body; // Recibir el preference_id o payment_id desde el frontend
+    const { payment_id, preference_id } = req.body;
 
+    if (!payment_id && !preference_id) {
+      return res.status(400).json({ success: false, message: "Debe proporcionar payment_id o preference_id." });
+    }
+
+    let paymentInfo;
     if (payment_id) {
-      // Consultar el estado del pago si tenemos el payment_id
-      const paymentInfo = await axios.get(
-        `https://api.mercadopago.com/v1/payments/${payment_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-          },
-        }
-      );
-
+      console.log("Consultando el pago con payment_id:", payment_id);
+      paymentInfo = await axios.get(`https://api.mercadopago.com/v1/payments/${payment_id}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+        },
+      });
       console.log("Información del pago:", paymentInfo.data);
+    } else if (preference_id) {
+      console.log("Consultando la preferencia con preference_id:", preference_id);
+      paymentInfo = await axios.get(`https://api.mercadopago.com/checkout/preferences/${preference_id}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+        },
+      });
+      console.log("Información de la preferencia:", paymentInfo.data);
+    }
 
-      res.status(200).json({
+    if (paymentInfo.data.status === 'approved') {
+      return res.status(200).json({
         success: true,
-        message: "Información del pago obtenida correctamente.",
+        message: 'Pago verificado y aprobado',
         data: paymentInfo.data,
       });
-    } else if (preference_id) {
-      // Consultar la preferencia si tenemos el preference_id
-      const preferenceInfo = await axios.get(
-        `https://api.mercadopago.com/checkout/preferences/${preference_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-          },
-        }
-      );
-
-      console.log("Información de la preferencia:", preferenceInfo.data);
-
-      res.status(200).json({
-        success: true,
-        message: "Información de la preferencia obtenida correctamente.",
-        data: preferenceInfo.data,
-      });
     } else {
-      throw new Error("Debes proporcionar un payment_id o preference_id.");
+      return res.status(400).json({ success: false, message: 'Pago no aprobado' });
     }
+
   } catch (error) {
-    console.error("Error al verificar el pago:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Error al verificar el pago.",
-      error: error.message,
-    });
+    console.error('Error al verificar el pago:', error.message);
+    return res.status(500).json({ success: false, message: 'Error al verificar el pago', error: error.message });
   }
 };
 
@@ -340,5 +329,6 @@ export {
   bookAppointment,
   listAppointments,
   cancelAppointment,
-  paymentMercadoPago,verifyMercadoPago
+  paymentMercadoPago,
+  verifyMercadoPago
 };

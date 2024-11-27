@@ -10,28 +10,39 @@ import DashboardPage from "./pages/admin/DashboardPage";
 import AllApoinmentsPage from "./pages/admin/AllAppoinmentsPage";
 import AddDoctorPage from "./pages/admin/AddDoctorPage";
 import DoctorsList from "./pages/admin/DoctorsListPage";
+import { DoctorContext } from "./context/DoctorContext";
+import DoctorDashboards from "./pages/doctor/DoctorDashboards";
+import DoctorAppoinments from "./pages/doctor/DoctorAppoinments";
+import DoctorProfile from "./pages/doctor/DoctorProfile";
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
+  const { dToken } = useContext(DoctorContext);
 
-  return aToken ? (
+  return aToken || dToken ? (
     <div className="bg-[#F8F9FD]">
       <ToastContainer />
-      <NavbarComponent/>
+      <NavbarComponent />
       <div className="flex items-start">
-        <SidebarComponent/>
+        <SidebarComponent />
         <Routes>
-          <Route path="/" element={<></>}/>
-          <Route path="/admin-dashboard" element={<DashboardPage/>}/>
-          <Route path="/todos-los-turnos" element={<AllApoinmentsPage/>}/>
-          <Route path="/agregar-doctor" element={<AddDoctorPage/>}/>
-          <Route path="/lista-doctores" element={<DoctorsList/>}/>
+          {/* ADMIN ROUTES */}
+          <Route path="/" element={<></>} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/todos-los-turnos" element={<AllApoinmentsPage />} />
+          <Route path="/agregar-doctor" element={<AddDoctorPage />} />
+          <Route path="/lista-doctores" element={<DoctorsList />} />
+
+          {/* DOCTOR ROUTES */}
+          <Route path="/doctor-dashboard" element={<DoctorDashboards />} />
+          <Route path="/doctor-turnos" element={<DoctorAppoinments />} />
+          <Route path="/doctor-perfil" element={<DoctorProfile />} />
         </Routes>
       </div>
     </div>
   ) : (
     <>
-      <LoginPage />
+      <LoginPage/>
       <ToastContainer />
     </>
   );
