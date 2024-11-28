@@ -11,7 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MyAppointmentsPage from "./pages/MyAppointmentsPage"
 import AppointmentPage from "./pages/AppointmentPage"
-import SuccessPage from "./pages/SuccessComponent"
+import ErrorPage from "./pages/errorPage"
+import SuccessPage from "./pages/SuccessPage"
 
 const App = () => {
   return (
@@ -28,7 +29,8 @@ const App = () => {
       <Route path="/mi-perfil" element={<MyProfilePage/>}/>
       <Route path="/mis-turnos" element={<MyAppointmentsPage/>}/>
       <Route path="/turnos/:docId" element={<AppointmentPage/>}/>
-      <Route path="/success" element={<SuccessPage/>}/>
+      <Route path="/success-payment" element={<SuccessPage/>}/>
+      <Route path="/error-payment" element={<ErrorPage />} />
      </Routes>
      <FooterComponent/>
     </div>

@@ -11,7 +11,7 @@ import General_physician from './General_physician.svg'
 import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
-
+import mp_logo from './mercado-pago-logo-0.png'
 
 export const assets = {
     appointment_img,
@@ -21,6 +21,7 @@ export const assets = {
     chats_icon,
     contact_image,
     about_image,
+    mp_logo
 }
 
 export const specialityData = [

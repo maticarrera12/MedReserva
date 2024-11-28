@@ -7,6 +7,7 @@ import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import axios from "axios"
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { locales } from "validator/lib/isIBAN.js";
 
 
 
@@ -226,6 +227,59 @@ const listAppointments = async (req, res) => {
   }
 
 
+  const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN }
+  );
+
+  const createPaymentPreference = async (req, res) => {
+    const { appointmentId } = req.body; // Obtener el id de la cita desde el frontend
+  
+    try {
+      // Buscar la cita en la base de datos
+      const appointment = await appointmentModel.findById(appointmentId);
+  
+      if (!appointment) {
+        return res.status(404).json({ message: 'Cita no encontrada' });
+      }
+  
+      // Configuración de MercadoPago
+      const preference = new Preference(client);
+  
+      // Crear la preferencia con los datos de la cita
+      const response = await preference.create({
+        body: {
+          items: [
+            {
+              title: `Consulta con ${appointment.docData.name}`, // Título de la consulta
+              quantity: 1,
+              unit_price: appointment.amount, // Monto de la cita
+            }
+          ],
+          back_urls: {
+            success: 'http://localhost:5173/success-payment', // URL de éxito
+            failure: 'http://localhost:5173/error-payment', // URL de fallo
+            pending: 'http://localhost:5173/pago-pendiente', // URL de pendiente
+          },
+          auto_return:'approved',
+          notification_url: 'http://localhost:5173/webhook', // Webhook para notificaciones (opcional)
+          external_reference: appointment._id, // Usamos el ID de la cita como referencia
+        }
+      });
+  
+      // Verifica la respuesta completa de la API
+      console.log(response); // Esto te mostrará toda la respuesta, para ver si contiene preference_id
+  
+      // Retornar el init_point y preference_id de forma correcta
+      res.json({
+        init_point: response.init_point, // URL para redirigir al usuario para completar el pago
+        preference_id: response.id, // Accede a `id` en vez de `_id` si es necesario
+      });
+    } catch (error) {
+      console.error('Error al crear la preferencia de pago:', error);
+      res.status(500).send('Error al crear la preferencia de pago');
+    }
+  };
+  
+
 export {
   registerUser,
   loginUser,
@@ -234,5 +288,5 @@ export {
   bookAppointment,
   listAppointments,
   cancelAppointment,
-  paymentMercadoPago
+  createPaymentPreference
 };
