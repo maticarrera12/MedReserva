@@ -12,6 +12,10 @@ const appointmentSchema = new mongoose.Schema({
     cancelled : {type: Boolean, default:false},
     payment : {type: Boolean, default:false},
     isCompleted : {type: Boolean, default:false},
+    // paymentStatus: { type: String, default: "" },
+    // paymentDate: { type: Date },
+    // externalReference: { type: String },
+    // paymentErrorMessage: { type: String }, // Nuevo campo para el mensaje de error
 });
 
 const appointmentModel = mongoose.models.appointment || mongoose.model('appointment', appointmentSchema);
