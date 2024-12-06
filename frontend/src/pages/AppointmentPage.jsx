@@ -142,14 +142,16 @@ const AppointmentPage = () => {
 
   useEffect(() => {
     fetchDocInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doctors, docId]);
 
   useEffect(() => {
     getAvaibleSlots();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docInfo]);
 
   useEffect(() => {
-    console.log(docSlots);
+
   }, [docSlots]);
 
   return (
@@ -270,6 +272,8 @@ const AppointmentPage = () => {
             </div>
           )}
         </div>
+
+        <RelatedDoctorsComponent docId={docId} speciality={docInfo.speciality}/>
       </div>
     )
   );

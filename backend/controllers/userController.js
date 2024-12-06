@@ -255,18 +255,23 @@ const listAppointments = async (req, res) => {
               currency_id: 'ARS', // Especificar moneda (opcional)
             },
           ],
+           payment_methods:{
+            excluded_payment_types: [],
+            default_payment_method_id: "account_money",
+            default_card_id: "4b8f93e462294f6119df42ba642a4cd9",
+           },
           back_urls: {
             success: 'http://localhost:5173/success-payment', // URL de éxito
             failure: 'http://localhost:5173/error-payment', // URL de fallo
             pending: 'http://localhost:5173/pago-pendiente', // URL de pendiente
           },
           auto_return: 'approved',
-          external_reference: appointment._id,
+          external_reference: appointment._id
         },
       });
   
       // Mostrar la respuesta completa en la consola
-      console.log("Respuesta completa de la preferencia:", response); // Aquí ves toda la respuesta, incluyendo init_point
+      // console.log("Respuesta completa de la preferencia:", response); // Aquí ves toda la respuesta, incluyendo init_point
   
       // Retornar la URL de pago y preference_id
       res.json({
@@ -282,51 +287,49 @@ const listAppointments = async (req, res) => {
   
 
 
-  //// API para verificar el pago
-
-  // const verifyPayment = async (req, res) => {
-  //   // Parámetros enviados por Mercado Pago
-  //   const { collection_status, preference_id, external_reference, payment_status } = req.query;
+  const verifyPayment = async (req, res) => {
+    const { collection_status, preference_id, external_reference, payment_status } = req.body;
   
-  //   // Verificar que los parámetros necesarios estén presentes
-  //   if (!collection_status || !preference_id || !external_reference) {
-  //     return res.status(400).json({ message: "Faltan parámetros de la respuesta" });
-  //   }
+    // Verificar que los parámetros necesarios estén presentes
+    if (!collection_status || !preference_id || !external_reference) {
+      return res.status(400).json({ message: "Faltan parámetros de la respuesta" });
+    }
   
-  //   try {
-  //     // Buscar la cita usando el `external_reference` que es el ID de la cita
-  //     const appointment = await appointmentModel.findOne({ externalReference: external_reference });
+    try {
+      // Buscar la cita usando el `external_reference` que es el ID de la cita
+      const appointment = await appointmentModel.findOne({ _id: external_reference });  // Aquí cambiamos por _id
   
-  //     if (!appointment) {
-  //       return res.status(404).json({ message: "Cita no encontrada" });
-  //     }
+      if (!appointment) {
+        return res.status(404).json({ message: "Cita no encontrada" });
+      }
   
-  //     // Actualizar el estado del pago en la cita
-  //     if (collection_status === "approved") {
-  //       // Si el pago es aprobado
-  //       appointment.payment = true; // Marcar el pago como realizado
-  //       appointment.paymentStatus = "approved"; // Estado de pago aprobado
-  //       appointment.paymentDate = new Date(); // Guardar la fecha del pago
-  //     } else {
-  //       // Si el pago no es aprobado
-  //       appointment.payment = false; // Marcar el pago como no realizado
-  //       appointment.paymentStatus = "failed"; // Estado de pago fallido
-  //       appointment.paymentDate = null; // No hay fecha de pago
-  //       appointment.paymentErrorMessage = `Error de pago: ${payment_status || 'Desconocido'}`; // Mensaje de error
-  //     }
+      // Actualizar el estado del pago en la cita
+      if (collection_status === "approved") {
+        // Si el pago es aprobado
+        appointment.payment = true; // Marcar el pago como realizado
+        appointment.paymentStatus = "approved"; // Estado de pago aprobado
+        appointment.paymentDate = new Date(); // Guardar la fecha del pago
+      } else {
+        // Si el pago no es aprobado
+        appointment.payment = false; // Marcar el pago como no realizado
+        appointment.paymentStatus = "failed"; // Estado de pago fallido
+        appointment.paymentDate = null; // No hay fecha de pago
+        appointment.paymentErrorMessage = `Error de pago: ${payment_status || 'Desconocido'}`; // Mensaje de error
+      }
   
-  //     // Actualizar la cita en la base de datos
-  //     await appointment.save();
+      // Actualizar la cita en la base de datos
+      await appointment.save();
   
-  //     return res.status(200).json({
-  //       message: `Pago procesado. Estado: ${collection_status}`,
-  //       appointment,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error al verificar el pago:", error);
-  //     return res.status(500).json({ message: "Error al verificar el pago" });
-  //   }
-  // };
+      return res.status(200).json({
+        message: `Pago procesado. Estado: ${collection_status}`,
+        appointment,
+      });
+    } catch (error) {
+      console.error("Error al verificar el pago:", error);
+      return res.status(500).json({ message: "Error al verificar el pago" });
+    }
+  };
+  
 
 
 
@@ -340,5 +343,5 @@ export {
   listAppointments,
   cancelAppointment,
   createPaymentPreference,
-  // verifyPayment,
+  verifyPayment,
 };

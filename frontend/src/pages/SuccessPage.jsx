@@ -7,7 +7,7 @@ import { AppContext } from "../context/AppContext";
 const SuccessPage = () => {
   const location = useLocation();
   const [successMessage, setSuccessMessage] = useState(null);
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, aToken } = useContext(AppContext);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -38,10 +38,10 @@ const SuccessPage = () => {
       const response = await axios.post(backendUrl + "/api/user/verificar-pago", {
         collection_status: collectionStatus,
         preference_id: preferenceId,
-        external_reference: externalReference,
+        external_reference: externalReference,  // Se mantiene para usarlo como referencia de la cita
         payment_status: paymentStatus,
-      });
-
+      },{headers:{aToken}});
+  
       // Si el pago fue exitoso, mostrar mensaje de éxito
       if (response.status === 200) {
         setSuccessMessage("El pago se procesó correctamente. ¡Gracias por tu compra!");
