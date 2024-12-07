@@ -1,3 +1,5 @@
+
+
 import { useContext } from 'react'
 import { DoctorContext } from '../../context/DoctorContext'
 import { useEffect } from 'react'
@@ -9,6 +11,8 @@ import { AppAdminContext} from '../../context/AppAdminContext';
 import { RxCrossCircled } from "react-icons/rx";
 import { RxCheckCircled } from "react-icons/rx";
 
+
+
 const DoctorDashboards = () => {
 
   const {dashData, setDashData,cancelAppointment,completeAppointment, getDashData, dToken } = useContext(DoctorContext)
@@ -19,9 +23,9 @@ const DoctorDashboards = () => {
   useEffect(()=>{
     if (dToken) {
       getDashData()
-
-      
     }
+
+    
   },[dToken])
   return dashData && (
     <div className='m-5'>

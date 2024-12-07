@@ -1,10 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { useContext, useState } from "react";
-import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import { IoIosArrowDown } from "react-icons/io";
 import { AppContext } from "../context/AppContext";
 import { RiMenu5Line } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
+
 
 
 
@@ -17,7 +18,6 @@ const NavbarComponent = () => {
     setToken(false);
     localStorage.removeItem("token");
   };
-
 
   
   return (
@@ -50,7 +50,7 @@ const NavbarComponent = () => {
         {token && userData ? (
           <div className="flex items-center  gap-2 cursor-pointer group relative">
             <img className="w-8 rounded-full" src={userData.image} alt="" />
-            <KeyboardArrowDownOutlinedIcon className="w-2.5" />
+            <IoIosArrowDown  className="w-2.5" />
             <div className="absolute top-0 right-0 pt-12 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="min-w-36 bg-stone-100 rounded flex flex-col gap-4 p-4">
                 <p
