@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
-import { AppContext } from "../../context/AppContext";
+import { AppAdminContext} from "../../context/AppAdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const DoctorProfile = () => {
   const { profileData, setProfileData, getProfiledata, dToken, backendUrl  } =
     useContext(DoctorContext);
-  const { currency} = useContext(AppContext);
+  const { currency} = useContext(AppAdminContext);
 
   const [isEdit, setIsEdit] = useState(false)
 

@@ -2,13 +2,14 @@
 import { useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { useEffect } from "react";
-import { AppContext } from "../../context/AppContext";
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { AppAdminContext } from "../../context/AppAdminContext";
+import { RxCrossCircled } from "react-icons/rx";
+
 
 const AllApoinmentsPage = () => {
 
   const {aToken, appointments, getAllAppointments, cancelAppointment } = useContext(AdminContext);
-  const {calculateAge, slotDateFormat, currency} = useContext(AppContext);
+  const {calculateAge, slotDateFormat, currency} = useContext(AppAdminContext);
   
   useEffect(() => {
     if (aToken) {
@@ -50,9 +51,11 @@ const AllApoinmentsPage = () => {
                 ) : item.isCompleted
                 ? <p className="text-green-500 text-xs font-medium">Completado</p> 
                 :(
-                    <CancelOutlinedIcon
+                    // <CancelOutlinedIcon
+                    <RxCrossCircled
                       onClick={() => cancelAppointment(item._id)}
                       className="text-red-600 cursor-pointer"
+                      fontSize="large"
                     />
                 )}
               </div>

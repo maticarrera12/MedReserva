@@ -2,18 +2,17 @@ import { useContext } from 'react'
 import { DoctorContext } from '../../context/DoctorContext'
 import { useEffect } from 'react'
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import BallotRoundedIcon from '@mui/icons-material/BallotRounded';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import { AppContext } from '../../context/AppContext';
+import { AppAdminContext} from '../../context/AppAdminContext';
+import { RxCrossCircled } from "react-icons/rx";
+import { RxCheckCircled } from "react-icons/rx";
 
 const DoctorDashboards = () => {
 
   const {dashData, setDashData,cancelAppointment,completeAppointment, getDashData, dToken } = useContext(DoctorContext)
-  const {currency, slotDateFormat} = useContext(AppContext)
+  const {currency, slotDateFormat} = useContext(AppAdminContext)
 
 
 
@@ -94,12 +93,12 @@ const DoctorDashboards = () => {
               </p>
             ) : (
               <div className="flex justify-end gap-4">
-                <CancelOutlinedIcon
+                <RxCrossCircled
                   fontSize="large"
                   onClick={() => cancelAppointment(item._id)}
                   className="text-red-600 cursor-pointer"
                 />
-                <CheckCircleOutlinedIcon
+                <RxCheckCircled
                   fontSize="large"
                   onClick={() => completeAppointment(item._id)}
                   className="text-green-600 cursor-pointer"

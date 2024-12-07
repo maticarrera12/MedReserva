@@ -97,9 +97,10 @@ const LoginPage = () => {
         </button>
 
         {state === SIGN_UP  
-          ? <p>Ya tienes una cuenta? <span onClick={() => setState(LOGIN)} className="text-primary underline cursor-pointer">Ingresa acá</span></p>
+          ? <p>Ya tienes una cuenta? <span onClick={() => setState(LOGIN)} className="text-primary underline cursor-pointer">Clickea acá</span></p>
           : <p>Crear una nueva cuenta? <span onClick={() => setState(SIGN_UP)} className="text-primary underline cursor-pointer">Clickea acá</span></p>
         }
+        <p>¿Tenés una cuenta Profesional?{" "}<span onClick={() => navigate('/admin-login')} className="text-primary underline cursor-pointer">Clickea acá</span></p>
       </div>
     </form>
   );

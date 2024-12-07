@@ -1,17 +1,19 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AdminContext } from "../context/AdminContext"
 import axios from "axios";
 import { toast } from "react-toastify";
 import { DoctorContext } from "../context/DoctorContext";
+import { useNavigate } from "react-router-dom";
 
 
-const LoginPage = () => {
+const LoginAdminPage = () => {
 
     const [state, setState] = useState('Admin');
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
-    const {setAToken,backendUrl, } = useContext(AdminContext);
-    const{setDToken} = useContext(DoctorContext)
+    const {setAToken,backendUrl, aToken } = useContext(AdminContext);
+    const{setDToken, dToken} = useContext(DoctorContext)
+    const navigate = useNavigate();
     const onSubmitHandler = async (event) => {
         event.preventDefault();
         try {
@@ -21,6 +23,9 @@ const LoginPage = () => {
             if (data.success) {
                 localStorage.setItem('aToken',data.token)
                 setAToken(data.token);
+                console.log(data.token);
+                
+                
             }else{
                 toast.error(data.message)
             }
@@ -42,7 +47,15 @@ const LoginPage = () => {
         }
     }
 
-
+    useEffect(() => {
+        if (aToken) {
+          navigate("/dashboard");
+        } else if (dToken) {
+          navigate("/doctor-dashboard");
+        } else {
+          navigate("/admin-login");
+        }
+      }, [aToken, dToken, navigate]);
 
 
   return (
@@ -64,9 +77,11 @@ const LoginPage = () => {
                 ? <p>Doctor Login? <span className="text-primary underline cursor-pointer" onClick={()=>setState('Doctor')}>Clickea Aca</span></p>
                 : <p>Admin Login? <span className="text-primary underline cursor-pointer" onClick={()=>setState('Admin')}>Clickea Aca</span></p>
             }
+            <p>¿Tenés una cuenta de Usuario?{" "}<span onClick={() => navigate('/login')} className="text-primary underline cursor-pointer">Clickea acá</span></p>
+
         </div>
     </form>
   )
 }
 
-export default LoginPage
+export default LoginAdminPage

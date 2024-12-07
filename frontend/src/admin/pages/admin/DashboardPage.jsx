@@ -5,13 +5,12 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import BallotRoundedIcon from '@mui/icons-material/BallotRounded';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { AppContext } from "../../context/AppContext";
+import { AppAdminContext} from "../../context/AppAdminContext";
+import { RxCrossCircled } from "react-icons/rx";
 
 const DashboardPage = () => {
-  const { aToken, getDashData, cancelAppointment, dashData } =
-    useContext(AdminContext);
-  const { slotDateFormat } = useContext(AppContext);
+  const { aToken, getDashData, cancelAppointment, dashData } = useContext(AdminContext);
+  const { slotDateFormat } = useContext(AppAdminContext);
 
   useEffect(() => {
     if (aToken) {
@@ -93,9 +92,10 @@ const DashboardPage = () => {
                 Completado
               </p>
             ) : (
-              <CancelOutlinedIcon
+             <RxCrossCircled
                 onClick={() => cancelAppointment(item._id)}
-                className="text-red-600 cursor-pointer"
+                className="text-red-600 cursor-pointer "
+                fontSize="large"
               />
             )}
           </div>

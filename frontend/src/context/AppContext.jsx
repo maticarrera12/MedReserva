@@ -64,7 +64,7 @@ const AppContextProvider = (props) => {
     backendUrl,
     userData,
     setUserData,
-    loadUserProfileData
+    loadUserProfileData,
   };
 
   return (

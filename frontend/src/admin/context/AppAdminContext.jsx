@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-export const AppContext = createContext()
+export const AppAdminContext = createContext()
 
-const AppContextProvider = (props)=>{
+const AppAdminContextProvider = (props)=>{
 
     const calculateAge = (dob) =>{
         const today = new Date()
@@ -29,11 +29,14 @@ const AppContextProvider = (props)=>{
         "Dic",
       ];
     
-        // Formatear la fecha de la cita
-        const slotDateFormat = (slotDate) => {
-          const dateArray = slotDate.split(" ");
-          return dateArray[0] + " " + months[Number(dateArray[1])] + "," + dateArray[2];
-        };
+      const slotDateFormat = (slotDate) => {
+        const dateArray = slotDate.split(" ");
+        if (dateArray.length === 3) {
+            return dateArray[0] + " " + months[Number(dateArray[1])] + "," + dateArray[2];
+        } else {
+            return "Invalid Date"; // You could return an error message or default format
+        }
+    };
 
 
         const currency = "$"
@@ -45,10 +48,10 @@ const AppContextProvider = (props)=>{
     }
 
     return(
-        <AppContext.Provider value={value}>
+        <AppAdminContext.Provider value={value}>
             {props.children}
-        </AppContext.Provider>
+        </AppAdminContext.Provider>
     )
 }
 
-export default AppContextProvider
+export default AppAdminContextProvider

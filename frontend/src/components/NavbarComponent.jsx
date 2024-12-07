@@ -2,9 +2,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { useContext, useState } from "react";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import { AppContext } from "../context/AppContext";
+import { RiMenu5Line } from "react-icons/ri";
+import { RxCross2 } from "react-icons/rx";
+
+
 
 const NavbarComponent = () => {
   const navigate = useNavigate();
@@ -72,19 +74,13 @@ const NavbarComponent = () => {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
+            className="bg-primary text-white px-8 py-3 rounded-full font-light"
           >
             Crear cuenta
           </button>
         )}
 
-        {/* <button
-          onClick={(logout)}
-          className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
-        >
-          Borrar Token
-        </button> */}
-        <MenuIcon className="w-6 md:hidden" onClick={() => setShowMenu(true)} />
+        <RiMenu5Line className="w-6 block md:hidden" fontSize="large" onClick={() => setShowMenu(true)} />
         {/* -------menumobile------- */}
         <div
           className={`${
@@ -93,7 +89,7 @@ const NavbarComponent = () => {
         >
           <div className="flex items-center justify-between px-5 py-6">
             <img className="w-36" src={assets.logo} alt="" />
-            <CloseIcon
+            <RxCross2
               fontSize="large"
               className="w-7 text-primary"
               onClick={() => setShowMenu(false)}

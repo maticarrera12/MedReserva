@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { useEffect } from "react";
-import { AppContext } from "../../context/AppContext";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { AppAdminContext } from "../../context/AppAdminContext";
+import { RxCrossCircled } from "react-icons/rx";
+import { RxCheckCircled } from "react-icons/rx";
+
 
 const DoctorAppoinments = () => {
   const {
@@ -13,7 +14,7 @@ const DoctorAppoinments = () => {
     completeAppointment,
     cancelAppointment,
   } = useContext(DoctorContext);
-  const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
+  const { calculateAge, slotDateFormat, currency } = useContext(AppAdminContext);
 
   useEffect(() => {
     if (dToken) {
@@ -24,6 +25,12 @@ const DoctorAppoinments = () => {
   return (
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">Mis Turnos</p>
+
+      {appointments.length === 0 ? (
+        <p className="text-center text-gray-600 text-sm">
+          No tenes proximos turnos programados.
+        </p>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {appointments.reverse().map((item, index) => (
           <div
@@ -105,12 +112,12 @@ const DoctorAppoinments = () => {
               </p>
             ) : (
               <div className="flex justify-end gap-4">
-                <CancelOutlinedIcon
+                <RxCrossCircled 
                   fontSize="large"
                   onClick={() => cancelAppointment(item._id)}
                   className="text-red-600 cursor-pointer"
                 />
-                <CheckCircleOutlinedIcon
+               <RxCheckCircled
                   fontSize="large"
                   onClick={() => completeAppointment(item._id)}
                   className="text-green-600 cursor-pointer"
@@ -120,6 +127,7 @@ const DoctorAppoinments = () => {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 };
