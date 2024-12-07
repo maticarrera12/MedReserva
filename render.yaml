@@ -2,8 +2,7 @@ services:
   - type: web
     name: backend
     env: node
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm start
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    workingDirectory: ./backend
     plan: free
-    branches:
-      - main
