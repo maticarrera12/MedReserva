@@ -21,14 +21,20 @@ import AdminLayout from "./layouts/AdminLayout";
 import { ToastContainer,toast } from "react-toastify";
 import { AdminContext } from "./admin/context/AdminContext";
 import { DoctorContext } from "./admin/context/DoctorContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import LoginAdminPage from "./admin/pages/LoginAdminPage";
 
 
 const App = () => {
-  const { aToken } = useContext(AdminContext); // Token de administrador
-  const { dToken } = useContext(DoctorContext); // Token de doctor
+  const { aToken } = useContext(AdminContext); 
+  const { dToken } = useContext(DoctorContext); 
+
+  useEffect(() => {
+    fetch("https://medreservabe.onrender.com")
+      .then(() => console.log("Backend activado"))
+      .catch((err) => console.error("Error al activar el backend:", err));
+  }, []);
 
   return (
     <>
